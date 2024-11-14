@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(req)
 
     if (!token)
-      throw new UnauthorizedException('Token no proporcionado')
+      throw new UnauthorizedException('Must provide a token for this request')
 
     try {
       const payload = await this.jwtService.verifyAsync(token, {
@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
       
       req['user'] = payload;
     } catch (error) {
-      throw new UnauthorizedException('Token inválido');
+      throw new UnauthorizedException('Invalid token');
     }
     return true
   }

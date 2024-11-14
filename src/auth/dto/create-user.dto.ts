@@ -1,14 +1,24 @@
 import {
   IsString,
-  IsNotEmpty,
+  IsEmail,
+  Min,
 } from "class-validator";
 
-export class CreateUserDto {
+import { User } from "@prisma/client";
+
+
+export class CreateUserDto implements Partial<User> {
   @IsString()
-  @IsNotEmpty()
-  username: string
+  name: string;
+  
+  @IsString()
+  lastName: string;
+
+  @IsEmail()
+  email: string;
 
   @IsString()
-  @IsNotEmpty()
-  password: string
+  @Min(6)
+  password: string;
+  
 }

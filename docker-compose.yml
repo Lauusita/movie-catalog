@@ -2,7 +2,7 @@ version: "3"
 
 services:
   users-db:
-    container_name: users_database
+    container_name: movies_hub
     image: postgres:15.3
     restart: always
     volumes:
