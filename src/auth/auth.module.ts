@@ -10,7 +10,10 @@ import { ValidateAuth } from './pipes/login.pipe';
   imports: [
     JwtModule.register({
       secret: jwtEnv.secret,
-      global: true
+      global: true,
+      signOptions: {
+        expiresIn: "1h" // se detalla el tiempo de expiración del token
+      }
     })
   ],
   controllers: [AuthController],
