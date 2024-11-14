@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('movies')
 @UseGuards(AuthGuard)
@@ -10,8 +11,12 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Post()
-  create(@Body() createMovieDto: CreateMovieDto) {
-    return this.moviesService.create(createMovieDto);
+  @UseInterceptors(FileInterceptor('file'))
+  async create(@Body() createMovieDto: CreateMovieDto, @UploadedFile() file: Express.Multer.File) {
+    const movieData = await this.moviesService.create(createMovieDto);
+    if (file) {
+      await this.moviesService.uploadFile(movieData.id, file.buffer)
+    }
   }
 
   @Get()
