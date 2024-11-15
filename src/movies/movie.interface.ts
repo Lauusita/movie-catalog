@@ -1,4 +1,4 @@
-import { Genre, Movie as PMovie } from "@prisma/client";
+import { Genre } from "@prisma/client";
 
 export type Movie = {
   rentPrice: string;
