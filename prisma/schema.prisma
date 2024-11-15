@@ -44,7 +44,7 @@ enum Genre {
 model Movie {
   id String @id @unique @default(uuid())
   title String
-  desc String
+  description String
   genre Genre
   director String
   mainActors String[]
@@ -52,6 +52,6 @@ model Movie {
   rentPrice Float
   salePrice Float
   image String 
-  qualification Decimal
+  qualification Float
 }
 

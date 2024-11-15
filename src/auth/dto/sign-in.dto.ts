@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Min } from "class-validator";
+import { IsEmail, IsString, Min, MinLength } from "class-validator";
 import { CreateUserDto } from "./create-user.dto";
 
 export class SignInDto implements Partial<CreateUserDto> {
@@ -6,7 +6,6 @@ export class SignInDto implements Partial<CreateUserDto> {
     email: string;
 
     @IsString()
-    @Min(6)
+    @MinLength(6)
     password: string;
-
 }

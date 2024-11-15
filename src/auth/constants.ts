@@ -1,3 +1,4 @@
-export default {
-  secret: "holalola2873"
+export enum ROLE {
+  ADMIN = "ADMIN",
+  USER = "USER"
 }
