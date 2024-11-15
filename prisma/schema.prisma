@@ -28,3 +28,30 @@ enum Role {
   USER
   ADMIN
 }
+
+enum Genre {
+  ACCION
+  COMEDIA
+  ROMANCE
+  TERROR
+  DRAMA
+  HORROR
+  SUSPENSO
+  INFANTIL
+  TODO
+}
+
+model Movie {
+  id String @id @unique @default(uuid())
+  title String
+  desc String
+  genre Genre
+  director String
+  mainActors String[]
+  duration String
+  rentPrice Float
+  salePrice Float
+  image String 
+  qualification Decimal
+}
+

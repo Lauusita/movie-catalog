@@ -1,11 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class MoviesService {
-  create(createMovieDto: CreateMovieDto) {
-    return 'This action adds a new movie';
+  constructor(private readonly prisma: PrismaService, private readonly cloudinary: CloudinaryService){}
+  async create(createMovieDto: CreateMovieDto) {
+    try {
+      return this.prisma.movie.create({ data: { 
+        ...createMovieDto
+      }})
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async uploadFile(id: string, file: Buffer) {
+    try {
+      const image = (await this.cloudinary.uploadImage(file)).url
+      return this.prisma.movie.update({ 
+        where: { id },
+        data: { image }
+      })
+    } catch (error) {
+      
+    }
   }
 
   findAll() {
@@ -23,4 +44,5 @@ export class MoviesService {
   remove(id: number) {
     return `This action removes a #${id} movie`;
   }
+  
 }

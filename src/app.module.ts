@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { MoviesModule } from './movies/movies.module';
 import { PrismaService } from './prisma/prisma.service';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
-  imports: [AuthModule, MoviesModule],
+  imports: [AuthModule, MoviesModule, CloudinaryModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
