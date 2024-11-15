@@ -17,7 +17,7 @@ export class MoviesController {
   @UseInterceptors(FileInterceptor('file'))
   async create(@Body() createMovieDto: CreateMovieDto, @UploadedFile() file: Express.Multer.File) {
     const movieData = await this.moviesService.create(createMovieDto, file.buffer);
-    return "Movie created successfully"
+    return { msg: "Movie created successfully"}
   }
 
   @Get()
