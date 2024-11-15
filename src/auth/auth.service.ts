@@ -45,6 +45,9 @@ export class AuthService  {
       }
     });
     
-    return newUser;
+    return {
+      ...newUser,
+      password: pass
+    };
   }
 }
