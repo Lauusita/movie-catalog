@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { AuthUser, User as IUser } from './interfaces/User';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { hash } from 'bcrypt'
 import { CreateUserDto } from './dto/create-user.dto';
 import { SignInDto } from './dto/sign-in.dto';
+import { LoginResponse } from './interface/login-response.interface';
+import { ROLE } from './constants';
 
 @Injectable()
 export class AuthService  {
@@ -16,14 +17,21 @@ export class AuthService  {
     private readonly jwtService: JwtService
   ){}
 
-  async login({ email }: SignInDto): Promise<AuthUser> {
+  async login({ email }: SignInDto): Promise<LoginResponse> {
     try {
-      const user = await this.prisma.user.findUnique({ where: { email }})
+      const user: User = await this.prisma.user.findUnique({ where: { email }})
 
       const payload = { email: user.email, sub: user.id };
       const token = await this.jwtService.signAsync(payload);
       
-      return { token };
+      const { name, lastName, role } = user as { name: string, lastName: string, role: ROLE }
+      
+      return { 
+        name,
+        lastName,
+        role,
+        token
+      }
     } catch (error) {
       throw error
     }

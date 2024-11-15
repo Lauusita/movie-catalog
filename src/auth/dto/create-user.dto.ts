@@ -2,10 +2,11 @@ import {
   IsString,
   IsEmail,
   Min,
+  IsEnum,
 } from "class-validator";
 
 import { User } from "@prisma/client";
-
+import { ROLE } from "../constants";
 
 export class CreateUserDto implements Partial<User> {
   @IsString()
@@ -21,4 +22,6 @@ export class CreateUserDto implements Partial<User> {
   @Min(6)
   password: string;
   
+  @IsEnum(ROLE)
+  rol: ROLE
 }
