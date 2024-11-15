@@ -1,23 +1,14 @@
-import { IsString, IsUUID, IsOptional, IsArray, IsNumber, IsDecimal, IsEnum } from 'class-validator';
+import { Decimal } from '@prisma/client/runtime/library';
+import { IsString, IsArray, IsNumber, IsDecimal, IsEnum, IsOptional } from 'class-validator';
+import { Movie } from '../movie.interface';
+import { Genre } from '@prisma/client';
 
-enum Genre {
-  ACCION = 'ACCION',
-  COMEDIA = 'COMEDIA',
-  ROMANCE = 'ROMANCE',
-  TERROR = 'TERROR',
-  DRAMA = 'DRAMA',
-  HORROR = 'HORROR',
-  SUSPENSO = 'SUSPENSO',
-  INFANTIL = 'INFANTIL',
-  TODO = 'TODO',
-}
-
-export class CreateMovieDto {
+export class CreateMovieDto implements Partial<Movie>{
   @IsString()
   title: string;
 
   @IsString()
-  desc: string;
+  description: string;
 
   @IsEnum(Genre)
   genre: Genre; 
@@ -25,22 +16,22 @@ export class CreateMovieDto {
   @IsString()
   director: string;
 
-  @IsArray()
-  @IsString({ each: true })
-  mainActors: string[];
+  @IsString()
+  mainActors: string[] | string
 
   @IsString()
   duration: string;
 
-  @IsNumber()
-  rentPrice: number;
-
-  @IsNumber()
-  salePrice: number;
+  @IsString()
+  rentPrice: string;
 
   @IsString()
+  salePrice: string;
+
+  @IsString()
+  @IsOptional()
   image: string;
 
-  @IsDecimal()
-  qualification: number; 
+  @IsString()
+  qualification: string; 
 }
