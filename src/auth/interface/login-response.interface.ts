@@ -4,5 +4,6 @@ export interface LoginResponse {
   token: string
   name: string
   lastName: string,
-  role: ROLE
+  email: string,
+  role: ROLE 
 }

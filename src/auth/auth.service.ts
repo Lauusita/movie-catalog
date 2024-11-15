@@ -24,12 +24,13 @@ export class AuthService  {
       const payload = { email: user.email, sub: user.id };
       const token = await this.jwtService.signAsync(payload);
       
-      const { name, lastName, role } = user as { name: string, lastName: string, role: ROLE }
+      const { name, lastName, role } = user as { name: string, lastName: string, role: ROLE, password: string }
       
       return { 
         name,
         lastName,
         role,
+        email,
         token
       }
     } catch (error) {
@@ -49,7 +50,8 @@ export class AuthService  {
         name: true,
         lastName: true,
         email: true,
-        password: true
+        password: true,
+        role: true
       }
     });
     
