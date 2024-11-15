@@ -7,15 +7,15 @@ export class ValidateAuth implements PipeTransform {
   constructor(private readonly prisma: PrismaService){}
 
   async transform(value: any, metadata: ArgumentMetadata) {
-    const { username, password } = value
+    const { email, password } = value
     
-    const user = await this.prisma.user.findUnique({ where: { username }})
+    const user = await this.prisma.user.findUnique({ where: { email }})
     
-    if (user === null) throw new NotFoundException('Usuario no existe');
+    if (user === null) throw new NotFoundException('User with this email do not exist');
     
     const verifyPassword = await compare(password, user.password)
 
-    if ( !verifyPassword ) throw new UnauthorizedException('Contraseña incorrecta')
+    if ( !verifyPassword ) throw new UnauthorizedException('Incorrect password')
     return value
   }
 }
