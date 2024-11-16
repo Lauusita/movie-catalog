@@ -1,5 +1,5 @@
 
-# 🎥 Movies - Final Project  
+# 🎥 Movies - Hub
 **Autores:** [Laura Arteta](https://github.com/tu-usuario) & [Juan Acosta](https://github.com/tu-usuario)  
 
 ---
