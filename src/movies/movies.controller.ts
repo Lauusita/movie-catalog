@@ -16,8 +16,7 @@ export class MoviesController {
   @UsePipes(TransformIncomingData, FileExtensionValidationPipe)
   @UseInterceptors(FileInterceptor('file'))
   async create(@Body() createMovieDto: CreateMovieDto, @UploadedFile() file: Express.Multer.File) {
-    const movieData = await this.moviesService.create(createMovieDto, file.buffer);
-    return { msg: "Movie created successfully"}
+    return await this.moviesService.create(createMovieDto, file.buffer);
   }
 
   @Get()
@@ -32,11 +31,11 @@ export class MoviesController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
-    return this.moviesService.update(+id, updateMovieDto);
+    return this.moviesService.update(id, updateMovieDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.moviesService.remove(+id);
+    return this.moviesService.remove(id);
   }
 }

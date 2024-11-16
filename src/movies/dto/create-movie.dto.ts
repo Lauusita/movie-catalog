@@ -16,22 +16,22 @@ export class CreateMovieDto implements Partial<Movie>{
   @IsString()
   director: string;
 
-  @IsString()
-  mainActors: string[] | string
+  @IsString({ each: true })
+  mainActors: string[] & string
 
   @IsString()
   duration: string;
 
   @IsString()
-  rentPrice: string;
+  rentPrice: string & number;
 
   @IsString()
-  salePrice: string;
+  salePrice: string & number;;
+
+  @IsString()
+  qualification: string & number;; 
 
   @IsString()
   @IsOptional()
   image: string;
-
-  @IsString()
-  qualification: string; 
 }
