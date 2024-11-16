@@ -11,3 +11,6 @@ You should have installed Docker Desktop and a table viewer like TablePlus to vi
 
 Up database 
 ```docker compose up```
+
+migrar prisma
+npx prisma migrate dev --name init
