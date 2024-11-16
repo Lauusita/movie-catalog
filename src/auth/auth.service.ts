@@ -29,6 +29,7 @@ export class AuthService  {
       return { 
         name,
         lastName,
+        email,
         role,
         email,
         token
@@ -46,12 +47,7 @@ export class AuthService  {
         password
       },
       select: {
-        id: true,
-        name: true,
-        lastName: true,
-        email: true,
-        password: true,
-        role: true
+        email: true
       }
     });
     
