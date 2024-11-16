@@ -31,7 +31,6 @@ export class AuthService  {
         lastName,
         email,
         role,
-        email,
         token
       }
     } catch (error) {
