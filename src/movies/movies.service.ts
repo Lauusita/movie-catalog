@@ -3,10 +3,11 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { Movie, Prisma } from '@prisma/client';
+import { Genre, Movie, Prisma } from '@prisma/client';
 
 @Injectable()
 export class MoviesService {
+  private apiKey = process.env.MOVIE_API_KEY;
 
   constructor(private readonly prisma: PrismaService, private readonly cloudinary: CloudinaryService){}
   async create(createMovieDto: CreateMovieDto, file: Buffer) {
@@ -23,6 +24,57 @@ export class MoviesService {
         throw new BadRequestException("The body of the request is invalid. Please check your input fields.")
       }
       throw new InternalServerErrorException('An unexpected error occurred while creating the movie.');
+    }
+  }
+
+  async createByAPI(createMovieDto: CreateMovieDto) {
+    try {
+      console.log(createMovieDto);
+      
+      const petition = await fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=${this.apiKey}`)
+      
+      const data = await petition.json()
+      const dataObj = data.results as []
+      
+      const ids =  dataObj.map((e: any): number =>  e.id);
+      
+      ids.forEach(async(id) => {
+        const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${this.apiKey}`
+        
+        const petition = await fetch(url);
+        const movieData = await petition.json()
+        
+        const qualification = this.calculateQualification(movieData.vote_average)
+        
+        const { genres } = movieData as { 
+          genres: { name: string }[] 
+        };
+        
+        const genre = genres
+          .map(genre => genre.name
+            .replace(/ /g, '_')
+            .toUpperCase()
+          ) as Genre[];
+        
+        await this.prisma.movie.create({ data: { 
+          ...createMovieDto,
+          title: movieData.title,
+          description: movieData.overview,
+          qualification,
+          genre: genre,
+          releaseDate: movieData.release_date,
+          duration: `${movieData.runtime} min`,
+          backgroundImage: `https://imagmovieData.tmdb.org/t/p/w600_and_h900_bestv2${movieData.backdrop_path}`,
+          image: `https://imagmovieData.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`
+        }})
+      })
+
+      return { msg: "Movie created successfully" }
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientValidationError) {
+        throw new BadRequestException("The body of the request is invalid. Please check your input fields.")
+      }
+      throw new InternalServerErrorException('An unexpected error occurred while creating the movie.', error.message);
     }
   }
 
@@ -69,5 +121,10 @@ export class MoviesService {
       }
       throw new InternalServerErrorException('An unexpected error occurred while deleting the movie.');
     }
+  }
+
+  private calculateQualification(x: number) {
+    const num = (x * 5) / 10
+    return parseFloat(num.toFixed(1))
   }
 }
