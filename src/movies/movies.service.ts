@@ -29,8 +29,6 @@ export class MoviesService {
 
   async createByAPI(createMovieDto: CreateMovieDto) {
     try {
-      console.log(createMovieDto);
-      
       const petition = await fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=${this.apiKey}`)
       
       const data = await petition.json()
