@@ -14,14 +14,43 @@ datasource db {
 }
 
 model User {
-  id        String   @id @unique @default(uuid())
-  email     String   @unique
-  password  String
-  name      String
-  lastName  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  id          String   @id @unique @default(uuid())
+  email       String   @unique
+  password    String
+  name        String
+  lastName    String
+  role        Role     @default(USER)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt()
+  transaction Transaction[]
+}
+
+model Movie {
+  id              String @id @unique @default(uuid())
+  title           String
+  description     String
+  genre           Genre[]
+  director        String
+  mainActors      String[]
+  duration        String
+  rentPrice       Float
+  salePrice       Float
+  image           String 
+  qualification   Float
+  releaseDate     String
+  backgroundImage String
+  transaction     Transaction[]
+}
+
+model Transaction {
+  id              String @id @default(uuid())
+  transactionDate DateTime @default(now())
+  userId          String
+  movieId         String
+  price           Float
+  transactionType TransactionType
+  user            User  @relation(fields: [userId], references: [id])
+  movie           Movie @relation(fields: [movieId], references: [id])
 }
 
 enum Role {
@@ -51,19 +80,7 @@ enum Genre {
   WESTERN
 }
 
-model Movie {
-  id              String @id @unique @default(uuid())
-  title           String
-  description     String
-  genre           Genre[]
-  director        String
-  mainActors      String[]
-  duration        String
-  rentPrice       Float
-  salePrice       Float
-  image           String 
-  qualification   Float
-  releaseDate     String
-  backgroundImage String
+enum TransactionType {
+  RENTAL
+  PURCHASE
 }
-
