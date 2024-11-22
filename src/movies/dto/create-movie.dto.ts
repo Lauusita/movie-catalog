@@ -1,4 +1,4 @@
-import { IsString, IsEnum, IsOptional } from 'class-validator';
+import { IsString, IsEnum, IsOptional, IsArray } from 'class-validator';
 import { Movie } from '../movie.interface';
 import { Genre } from '@prisma/client';
 
@@ -10,7 +10,7 @@ export class CreateMovieDto implements Partial<Movie>{
   description: string;
 
   @IsEnum(Genre)
-  genre: Genre[]; 
+  genre: Genre[] & Genre; 
 
   @IsString()
   director: string;

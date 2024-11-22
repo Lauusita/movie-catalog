@@ -12,16 +12,19 @@ export class MoviesService {
   constructor(private readonly prisma: PrismaService, private readonly cloudinary: CloudinaryService){}
   async create(createMovieDto: CreateMovieDto, file: Buffer) {
     try {
-      const image = (await this.cloudinary.uploadImage(file)).url;
+      const image = (await this.cloudinary.uploadImage(file)).url; 
+
       await this.prisma.movie.create({ data: { 
         ...createMovieDto,
-        image
+        backgroundImage: "https://i.pinimg.com/736x/5a/d4/7a/5ad47aae12355d55c86bcb408d88ba08.jpg",
+        image,
       }})
-
+      
       return { msg: "Movie created successfully" }
     } catch (error) {
       if (error instanceof Prisma.PrismaClientValidationError) {
-        throw new BadRequestException("The body of the request is invalid. Please check your input fields.")
+        console.error(error.message);
+        throw new BadRequestException(`The body of the request is invalid. Please check your input fields.`);
       }
       throw new InternalServerErrorException('An unexpected error occurred while creating the movie.');
     }
@@ -29,6 +32,8 @@ export class MoviesService {
 
   async createByAPI(createMovieDto: CreateMovieDto) {
     try {
+      console.log(createMovieDto);
+      
       const petition = await fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1&api_key=${this.apiKey}`)
       
       const data = await petition.json()
@@ -70,6 +75,7 @@ export class MoviesService {
       return { msg: "Movie created successfully" }
     } catch (error) {
       if (error instanceof Prisma.PrismaClientValidationError) {
+        console.error(error.message);
         throw new BadRequestException("The body of the request is invalid. Please check your input fields.")
       }
       throw new InternalServerErrorException('An unexpected error occurred while creating the movie.', error.message);
@@ -104,6 +110,10 @@ export class MoviesService {
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         throw new NotFoundException("Movie was not found")
+      }
+      if (error instanceof Prisma.PrismaClientValidationError) {
+        console.error(error.message);
+        throw new BadRequestException(`The body of the request is invalid. Please check your input fields.`);
       }
       throw new InternalServerErrorException('An unexpected error occurred while updating the movie.');
     }
