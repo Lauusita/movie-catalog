@@ -30,28 +30,40 @@ enum Role {
 }
 
 enum Genre {
-  ACCION
-  COMEDIA
-  ROMANCE
-  TERROR
+  ACTION 
+  ADVENTURE
+  ANIMATION
+  COMEDY
+  CRIME
+  DOCUMENTARY
   DRAMA
+  FAMILY
+  FANTASY
+  HISTORY
   HORROR
-  SUSPENSO
-  INFANTIL
-  TODO
+  MUSIC
+  MYSTERY
+  ROMANCE
+  SCIENCE_FICTION
+  TV_MOVIE
+  THRILLER
+  WAR
+  WESTERN
 }
 
 model Movie {
-  id String @id @unique @default(uuid())
-  title String
-  description String
-  genre Genre
-  director String
-  mainActors String[]
-  duration String
-  rentPrice Float
-  salePrice Float
-  image String 
-  qualification Float
+  id              String @id @unique @default(uuid())
+  title           String
+  description     String
+  genre           Genre[]
+  director        String
+  mainActors      String[]
+  duration        String
+  rentPrice       Float
+  salePrice       Float
+  image           String 
+  qualification   Float
+  releaseDate     String
+  backgroundImage String
 }
 
