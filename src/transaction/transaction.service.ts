@@ -14,7 +14,11 @@ export class TransactionService {
   async saveTransaction(transactionData: TransactionDto, userId: string) {
     try {
       await this.prisma.transaction.create({
-        data: { ...transactionData, userId }
+        data: { 
+          ...transactionData, 
+          userId,
+          transactionDate: new Date(),
+        }
       });
 
       return { msg: `${transactionData.transactionType} created successfully`}

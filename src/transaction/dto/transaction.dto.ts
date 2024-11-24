@@ -16,7 +16,4 @@ export class TransactionDto implements Partial<Transaction>{
 
   @IsEnum(paymentMethod)
   paymentMethod: paymentMethod;
-
-  @IsDate()
-  transactionDate: Date;
 }
