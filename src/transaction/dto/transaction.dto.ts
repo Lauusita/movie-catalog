@@ -1,5 +1,5 @@
-import { $Enums, Transaction, TransactionType } from "@prisma/client";
-import { IsDate, IsEnum, IsNumber, isString, IsString } from "class-validator";
+import { $Enums, paymentMethod, Transaction, TransactionType } from "@prisma/client";
+import { IsDate, IsEnum, IsNumber, IsString } from "class-validator";
 
 export class TransactionDto implements Partial<Transaction>{
   @IsString()
@@ -10,4 +10,10 @@ export class TransactionDto implements Partial<Transaction>{
 
   @IsEnum(TransactionType)
   transactionType: TransactionType;
+
+  @IsString()
+  email: string;
+
+  @IsEnum(paymentMethod)
+  paymentMethod: paymentMethod;
 }
