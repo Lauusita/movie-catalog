@@ -84,7 +84,7 @@ export class MoviesService {
 
   async findAll(): Promise<Movie[]> {
     const movies = await this.prisma.movie.findMany()
-    if (movies.length === 0) throw new NotFoundException("No movies found ")
+    if (movies.length === 0) throw new NotFoundException("No movies found")
     return movies
   }
 
