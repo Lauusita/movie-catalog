@@ -48,7 +48,9 @@ model Transaction {
   userId          String
   movieId         String
   price           Float
+  email           String
   transactionType TransactionType
+  paymentMethod   paymentMethod
   user            User  @relation(fields: [userId], references: [id])
   movie           Movie @relation(fields: [movieId], references: [id])
 }
@@ -83,4 +85,11 @@ enum Genre {
 enum TransactionType {
   RENTAL
   PURCHASE
+}
+
+enum paymentMethod {
+  PAYPAL
+  AMAZON
+  GOOGLE_WALLET
+  APPLE_PAY
 }
