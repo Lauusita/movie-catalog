@@ -13,7 +13,9 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', {
+    limits: { fileSize: 10 * 1024 * 1024 },
+  }))
   async create(
     @Body(new TransformIncomingData()) createMovieDto: CreateMovieDto, 
     @UploadedFile(new FileExtensionValidationPipe()) file: Express.Multer.File
