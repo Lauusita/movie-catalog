@@ -21,7 +21,7 @@ export class AuthService  {
     try {
       const user: User = await this.prisma.user.findUnique({ where: { email }})
 
-      const payload = { email: user.email, sub: user.id };
+      const payload = { email: user.email, id: user.id };
       const token = await this.jwtService.signAsync(payload);
       
       const { name, lastName, role } = user as { name: string, lastName: string, role: ROLE, password: string }

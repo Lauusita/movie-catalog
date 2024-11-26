@@ -67,8 +67,8 @@ export class MoviesService {
           genre: genre,
           releaseDate: movieData.release_date,
           duration: `${movieData.runtime} min`,
-          backgroundImage: `https://imagmovieData.tmdb.org/t/p/w600_and_h900_bestv2${movieData.backdrop_path}`,
-          image: `https://imagmovieData.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`
+          backgroundImage: `https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.backdrop_path}`,
+          image: `https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.poster_path}`
         }})
       })
 
@@ -84,7 +84,7 @@ export class MoviesService {
 
   async findAll(): Promise<Movie[]> {
     const movies = await this.prisma.movie.findMany()
-    if (movies.length === 0) throw new NotFoundException("No movies found ")
+    if (movies.length === 0) throw new NotFoundException("No movies found")
     return movies
   }
 
