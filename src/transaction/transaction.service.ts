@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Movie, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { TransactionDto } from './dto/transaction.dto';
 import { MoviesService } from 'src/movies/movies.service';
 
@@ -34,7 +34,7 @@ export class TransactionService {
     try { 
       const movies = await this.prisma.transaction.findMany({ where: { userId, transactionType: 'RENTAL' }})
 
-      if (movies.length === 0) throw new NotFoundException("No rented movies were found")
+      if (movies.length === 0) return []
 
       const moviesIds = movies.map( movie => movie.movieId )
 
@@ -57,7 +57,7 @@ export class TransactionService {
     try { 
       const movies = await this.prisma.transaction.findMany({ where: { userId, transactionType: 'PURCHASE' }})
 
-      if (movies.length === 0) throw new NotFoundException("No purchased movies were found")
+      if (movies.length === 0) return []
 
       const moviesIds = movies.map( movie => movie.movieId )
 
