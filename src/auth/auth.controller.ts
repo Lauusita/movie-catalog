@@ -1,10 +1,11 @@
-import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ValidateAuth } from './pipes/login.pipe';
 import { UniqueEmailPipe } from './pipes/sign-up.pipe';
 import { SignInDto } from './dto/sign-in.dto';
 import { LoginResponse } from './interface/login-response.interface';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -25,5 +26,11 @@ export class AuthController {
   @UsePipes(UniqueEmailPipe)
   async signUp(@Body() data: CreateUserDto) {
       return await this.authService.signUp(data);
+  }
+
+  @Get()
+  @UseGuards(AuthGuard)
+  verifyAuth() {
+    return true
   }
 }
